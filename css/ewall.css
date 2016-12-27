@@ -1,0 +1,83 @@
+.container{
+	position: relative;
+}
+.button{
+	width: 80px;
+	text-align: center;
+	cursor: pointer;
+	position: absolute;
+	right: 100px;
+	padding: 5px 10px;
+	background-color: #acc;
+	border-radius: 3px;
+}
+.button.start{
+	top:40px;
+}
+.button.stop{
+	top:100px;
+}
+video,canvas{
+	margin: 0;
+	padding: 0;
+	/*width:160px;
+	height:120px;*/
+	width:600px;
+	height: 200px;
+	display: block;
+}
+video#e_video{
+	opacity: 0.05;
+	margin: 0 auto;
+}
+canvas#e_canvas{
+	margin:0 auto;
+	opacity: 0.05;
+	background-color: #ccc;
+}
+canvas#blend_canvas{
+	margin:0 auto;
+	background-color: #ccc;
+}
+.content{
+	position: absolute;
+	/*width: 160px;
+	height: 120px;*/
+	width:600px;
+	height: 200px;
+	left:50%;
+	-webkit-transform:translateX(-50%);
+	transform: translateX(-50%);
+	top:600px;
+	background-color: blue;
+}
+.content .particle{
+	position: absolute;
+	z-index: 9;
+	width: 20px;
+	height: 20px;
+	top:50%;
+	left:0;
+	background-color: #000;
+	-webkit-transition: all linear 0.5s;
+	-o-transition: all linear 0.5s;
+	transition: all linear 0.5s;
+}
+.content .atom{
+	display: block;
+	position: absolute;
+	z-index: 9;
+	width:5px;
+	height: 5px;
+	border-radius: 5px;
+	background-color: #fff;
+	-webkit-transition: all linear 0.5s;
+	-o-transition: all linear 0.5s;
+	transition: all linear 0.5s;
+}
+
+
+
+
+
+
