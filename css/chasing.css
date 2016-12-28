@@ -17,22 +17,32 @@
 .button.stop{
 	top:100px;
 }
+.button:hover{
+	background-color: #bdd;
+}
 video,canvas{
 	margin: 0;
 	padding: 0;
 	/*width:160px;
 	height:120px;*/
-	width:600px;
+	width:400px;
 	height: 200px;
 	display: block;
 }
+#canvas_image{
+	display: block;
+	position: absolute;
+	right:20px;
+	top:180px;
+	/*opacity: 0.01;*/
+}
 video#e_video{
-	opacity: 0.05;
+	/*opacity: 0.05;*/
 	margin: 0 auto;
 }
 canvas#e_canvas{
 	margin:0 auto;
-	opacity: 0.05;
+	/*opacity: 0.05;*/
 	background-color: #ccc;
 }
 canvas#blend_canvas{
@@ -43,7 +53,7 @@ canvas#blend_canvas{
 	position: absolute;
 	/*width: 160px;
 	height: 120px;*/
-	width:600px;
+	width:400px;
 	height: 200px;
 	left:50%;
 	-webkit-transform:translateX(-50%);

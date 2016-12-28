@@ -3,18 +3,19 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-	<title>ewall</title>
+	<title>chasing</title>
 	<link href="img/icon/share.png" rel="icon" type="image/icon" >
 	<link rel="stylesheet" type="text/css" href="css/reset.css">
-	<link rel="stylesheet" type="text/css" href="css/ewall.css">
+	<link rel="stylesheet" type="text/css" href="css/chasing.css">
 </head>
 <body>
 <div class="container">
-	<video  autoplay id="e_video" ></video>
+	<video autoplay id="e_video" ></video>
 	<canvas id="e_canvas"></canvas>
 	<canvas id="blend_canvas"></canvas>
 	<div class="content">
 		<div class="particle"></div>
+		<!-- <div class="particle particle_right"></div> -->
 	</div>
 	<div class="start button" id="start">
 		<h1>start</h1>
@@ -22,10 +23,12 @@
 	<div class="stop button" id="stop">
 		<h1>stop</h1>
 	</div>
+	<img src="" id="canvas_image" width="300" height="200">
 </div>
-<!-- <script src='js/jquery-1.11.1.min.js'></script> -->
+
+<script src='js/jquery-1.11.1.min.js'></script>
 <!-- <script src='js/swiper.min.js'></script> -->
-<script src="js/polyfill.min.js"></script>
-<script src='js/ewall.js'></script>
+<!-- <script src="js/polyfill.min.js"></script> -->
+<script src='js/chasing.js'></script>
 </body>
 </html>
