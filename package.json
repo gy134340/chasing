@@ -1,16 +1,14 @@
 {
-  "name": "ewall",
+  "name": "chasing",
   "version": "1.0.0",
-  "description": "digital wall",
+  "description": "chasing your dog",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://MKN_Dage@bitbucket.org/MKN_Dage/ewall.git"
   },
   "author": "gy",
   "license": "MIT",
-  "homepage": "https://bitbucket.org/MKN_Dage/ewall#readme"
 }
