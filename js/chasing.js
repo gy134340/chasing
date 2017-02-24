@@ -5,31 +5,28 @@
 
 var video = document.getElementById("e_video");
 videoEnable( video );
-var canvas = document.getElementById("e_canvas");		// 连接视频源的canvas
+var canvas = document.getElementById("e_canvas");
 var ctx = canvas.getContext('2d');
 
-// 常量
-var ANIMATION;		// 存储animation动画
-var SUSPEND = false;		// 是否暂停方块移动
+var ANIMATION;		
+var SUSPEND = false;		
 var DIRECTION = "left";		// 移动物体进来的方向,需要保持一个方向
-var CAPTURE = true;			// 是否允许读取canvas图片
-var PARTICLE = document.querySelectorAll(".particle")[0];		// 中间移动的小黑块
+var CAPTURE = true;			
+var PARTICLE = document.querySelectorAll(".particle")[0];
 var canvasWidth = canvas.width;
 var canvasHeight = canvas.height;
 
-var lastImageData;		// 上一帧
+var lastImageData;
+var sourceImageData;
 
-var sourceImageData;	// 这一帧从canvas上读到的数据
-
-var blendCanvas =  document.getElementById("blend_canvas");		// 渲染出来的canvas
+var blendCanvas =  document.getElementById("blend_canvas");	
 var blendCtx = blendCanvas.getContext('2d');
-var content = document.querySelectorAll('.content')[0];			// 主体的页面
-var canvasImage = document.getElementById('canvas_image');		// 暂存canvas的Image
+var content = document.querySelectorAll('.content')[0];
+var canvasImage = document.getElementById('canvas_image');
 
-var start = document.getElementById("start");		// 开始按钮
-var stop = document.getElementById("stop");			// 停止按钮
+var start = document.getElementById("start");
+var stop = document.getElementById("stop");
 
-// 动画开始
 document.addEventListener('DOMContentLoaded',function(){
 
 	start.addEventListener('click',function(){
@@ -47,11 +44,8 @@ stop.addEventListener('click',function(){
 
 var frame = 0;		// 纪录第几帧,可能会用到
 
-// 添加粒子
 function addAtoms(num){
-
 	for(var i = 0; i < num; i++){
-
 		var atom = document.createElement("span");
 		var xPoi = Math.random().toFixed(2)*100;
 		var yPoi = Math.random().toFixed(2)*100;
@@ -62,27 +56,26 @@ function addAtoms(num){
 	}
 }
 
-addAtoms(2000);			// 添加许多粒子 
-var atoms = document.querySelectorAll(".atom");			// 存储粒子
-var atomsLen = atoms.length;		// 粒子长度
+addAtoms(2000);
+var atoms = document.querySelectorAll(".atom");
+var atomsLen = atoms.length;
 
-// change
 function render(){
 	var imgData = ctx.getImageData(0,0,canvasWidth,canvasHeight);
 	var blendData = blendCtx.createImageData(canvasWidth,canvasHeight);
 
 	sourceImageData = imgData;
 	if(!lastImageData){
-		lastImageData = sourceImageData;	// 第一帧时没有上一帧，存储为本帧
+		lastImageData = sourceImageData;
 	}
 	var dataLen = imgData.data.length;
 
 	imgToBw(blendData.data,imgData.data,lastImageData.data);
 	
-	lastImageData = sourceImageData;		// lastImageData存放上一帧的图像
-	blendCtx.putImageData(blendData,0,0);	// imgdata存放将要绘制的图像
+	lastImageData = sourceImageData;
+	blendCtx.putImageData(blendData,0,0);
 
-	getPosition();							// 检测变化最多的位置
+	getPosition();
 }
 
 // 图像二值化，所有像素点置255，便于下一步统计
@@ -104,16 +97,16 @@ function imgToBw(target,data1,data2){
 
 // 获得像素变化最多位置的坐标
 function getPosition(){
-	var poi = { max:0, xAxis:0 };		// 变化最多的块
-	var totalPixel = 0;			// 全部变化像素点,暂时不会用到
+	var poi = { max:0, xAxis:0 };
+	var totalPixel = 0;
 	
 	// @todo 相加同一x坐标点来检测行人
-	for(var i = 0; i < canvasWidth; i += 5){		// 切分块,对每一个块内变化的像素总量进行判断
+	for(var i = 0; i < canvasWidth; i += 5){
 		var sliceData =  blendCtx.getImageData(i,0,20,canvasHeight);
 		var sum = 0;
 		var sliceLen = sliceData.data.length;
-
 		for(var j = 0; j < sliceLen; j+=4){
+
 			// sum += sliceData.data[j] + sliceData.data[j+1] + sliceData.data[j+2];
 			sum += (sliceData.data[j] & 1 );		// 取符号位即可，rgb值一样,取一个值即可
 		}
@@ -122,12 +115,11 @@ function getPosition(){
 			poi.xAxis = i;		// 摄像头与canvas场景需要倒置
 		}
 
-		totalPixel += sum;	// 将每一块的像素点相加
+		totalPixel += sum;
 	}
 
 	moveParticle(poi); 
-
-	captureImage(totalPixel); 	// 根据变化的像素点决定是draw image				
+	captureImage(totalPixel);				
 }
 
 // 移动小黑块 @todo 太小的移动速度不管
@@ -136,7 +128,7 @@ function moveParticle(p){
 
 	// 切片中改变像素的数量
 	if(poi.max > 500 && SUSPEND === false){		
-		var xRatio = poi.xAxis / canvasWidth;		// 获得每帧变化最多的位置
+		var xRatio = poi.xAxis / canvasWidth;
 		xRatio = xRatio.toFixed(2) * 100;
 		var left = parseInt(PARTICLE.style.left) || 0;
 
@@ -189,7 +181,7 @@ function moveParticle(p){
 // 人的进入方向纠正
 function correctEntrance(l){
 	var left = l;
-	if(left < 15){				// 移动标记放在左边，暂停小块活动1s
+	if(left < 15){
 		SUSPEND = true;			
 		PARTICLE.style.display = "none";
 		PARTICLE.style.left = 100 + "%";
@@ -199,10 +191,11 @@ function correctEntrance(l){
 			PARTICLE.style.display = "block";
 		},1000);		
 
-	}else if(left > 85){		// 移动标记放在右边,暂停小块活动1s
+	}else if(left > 85){
 		SUSPEND = true;			
 		PARTICLE.style.display = "none";
 		PARTICLE.style.left = 0 + "%";
+
 		setTimeout(function(){
 			SUSPEND = false;
 			PARTICLE.style.display = "block";
@@ -253,12 +246,10 @@ function correctDirection(dir){
 // 	}
 // }
 
-// 从video更新下一帧
 function update(){
 	ctx.drawImage(video,0,0,canvasWidth,canvasHeight);
 }
 
-// main
 function animate(){
 	update();
 	render();	
@@ -269,7 +260,6 @@ function animate(){
 }
 
 // 取消animation一段时间
-// @param t 毫秒
 function suspendAnimation(t){
 	var time = t;
 
@@ -295,9 +285,9 @@ function spreadAtoms(x){
 		var xAbs = fastAbs(xPoi-xRefer);
 
 		if(xAbs < 8){			// 如果距离小于5
-			if(yPoi < 50){				// 横中轴线上半部分
+			if(yPoi < 50){	
 				atom.style.marginTop = - ( yPoi - ( xAbs * 10 ) ) + "px";
-			}else{						// 横中轴线下半部分
+			}else{		
 				atom.style.marginTop = ( 100 - yPoi ) - ( xAbs * 10) + "px";
 			}
 		}else{
@@ -307,13 +297,11 @@ function spreadAtoms(x){
 
 }
 
-// 恢复下方content的位置
 function resumeContent(){
 	PARTICLE.style.left = "0%" ;
 	resumeAtoms();
 }
 
-// 恢复所有小块的位置
 function resumeAtoms(){
 	// var atoms = document.querySelectorAll(".atom");
 	// var atomsLen = atoms.length;
@@ -333,7 +321,7 @@ function captureImage(t){
 
 		// console.log("totalPixel",totalPixel);
 		if(totalPixel > 10000){		// 图像中整体变化的像素点	
-			var imgUrl = canvas.toDataURL('image/jpg');		// 存储为jpg
+			var imgUrl = canvas.toDataURL('image/jpg');
 			canvasImage.src = imgUrl;
 			recordInfo(canvasImage.src);	
 
